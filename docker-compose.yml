@@ -1,0 +1,32 @@
+services:
+  rpo:
+    image: 'whichisyou/rpo-iso'
+    container_name: 'rpo'
+    depends_on:
+      - database-service
+    environment:
+      - SPRING.DATASOURCE.URL=jdbc:postgresql://database-service:5432/rpo_db
+      - SPRING.DATASOURCE.USERNAME=demo
+      - SPRING.DATASOURCE.PASSWORD=secret
+      - SPRING.JPA.HIBERNATE.DDL-AUTO=update
+      - SPRING.JPA.SHOW-SQL=true
+    ports:
+      - 8888:8080
+  database-service:
+    image: 'postgres'
+    container_name: "database-service"
+    environment:
+      - POSTGRES_USER=demo
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=rpo_db
+    ports:
+      - 2345:5432
+  test-database-service:
+    image: 'postgres'
+    container_name: "test-database-service"
+    environment:
+      - POSTGRES_USER=demo
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=rpo_db
+    ports:
+      - 2346:5432
